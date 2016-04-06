@@ -112,7 +112,7 @@ for pt in realpts:
 #    print x,y,z
 
 nlig = len(cylpoints)
-print "nlig: ", nlig
+#print "nlig: ", nlig
 
 liglens = []
 ligadd = 0
