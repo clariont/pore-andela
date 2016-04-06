@@ -1,9 +1,14 @@
 # read me
 
 ############################################
-make_coll_cyl.py
-Makes a giant hexagonal 2D sheet, then "cuts out" a section to use for the cylinder.
+**make_coll_cyl.py**
+Makes a giant hexagonal 2D sheet, then "cuts out" a section to use for the cylinder.  The hexagonal points are
+the grafted atoms.  Polymer beads are grown from the grafted atoms.
+
+
 Usage instructions: 
+
+
     enter (approximate) cyl_r, cyl_h, and d (lattice spacing). 
     the actual cyl_r and cyl_h will be given in units of d, the python script prints them out.
 
@@ -15,8 +20,9 @@ Usage instructions:
 
 
 ############################################
-lammps in.files
+**lammps in.files**
 Equilibration procedure: first run ideal chains, then run LJ chains, then start translocation.
+
 Translocation occurs with a constant force on the colloid and the polymer brush tail particles.
 
 
