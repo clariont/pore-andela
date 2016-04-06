@@ -1,0 +1,64 @@
+units		lj
+atom_style		full
+boundary		p p p
+#read_data cylligs.dat
+read_restart		 ideal.dat
+
+variable cylr equal 8.13943726841
+variable mySigma equal 1.0
+variable halfSigma equal 0.5*${mySigma}
+variable ljCut		equal 1.12246204831
+variable wallCut	equal ${halfSigma}*${ljCut}
+variable collSig	equal 2*${mySigma}
+variable collCut	equal 2*${ljCut}
+
+
+region		cylwall cylinder z 0 0 ${cylr} EDGE EDGE side in
+
+neighbor		 0.3 bin 
+
+bond_style	    harmonic
+bond_coeff	    1 200 1.2
+
+angle_style	    harmonic		
+angle_coeff	    1 0 180
+
+
+pair_style	    lj/cut 2.5
+pair_coeff	    1 * 1 1 ${ljCut}
+pair_coeff	    2 * 1 1 ${ljCut}
+pair_coeff	    3 * 1 ${collSig} ${collCut}
+
+group			heads type 1
+group			tails type 2
+group			moving type 2 3 
+group			colloid type 3
+velocity		moving create 1.0 482748
+velocity		heads create 0.0 1
+
+
+#NVE Run
+log real.lammps
+restart 1000 real1.dat real2.dat
+
+fix 5 tails nve
+fix 6 tails langevin 1.0 1.0 0.1 404297
+fix 7 tails wall/region cylwall lj126 1.0 ${halfSigma} ${wallCut}
+fix_modify 7 energy yes 
+fix 8 heads setforce 0.0 0.0 0.0 
+
+dump 1 all atom 1000 real.lammpstrj
+dump_modify 1 sort id
+
+minimize 1.0e-4 1.0e-6 100 1000
+thermo		1000
+timestep 0.000001
+run	20000
+timestep	0.001
+run		25000
+timestep	0.01
+run		120000
+
+
+
+
